@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Webpack Starter Kit</title>
+    <title>NBA Player Comparison Tool</title>
   </head>
   <body>
-    <h1>Webpack Starter Kit</h1>
-
-    <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
-
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
+    <header>
+      <h1>NBA Player Comparison Tool</h1>
+      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="nba logo">
+    </header>
+    <main id="main">
+      <section class="main--section">
+        <h2>Player One</h2>
+        <form>
+          <input type="text" id="left__first-name" placeholder="Enter First Name"/>
+          <input type="text" id="left__last-name" placeholder="Enter Last Name"/>
+          <button id="left--button">Submit</button>
+        </form>
+      </section>
+      <section class="main--section">
+        <h2>Player Two</h2>
+        <form>
+          <input type="text" id="right__first-name" placeholder="Enter First Name"/>
+          <input type="text" id="right__last-name" placeholder="Enter Last Name"/>
+          <button id="right--button">Submit</button>
+        </form>
+      </section>
+    </main>
   </body>
 </html>
