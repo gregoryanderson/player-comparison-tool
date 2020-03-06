@@ -12,9 +12,9 @@
       />
     </header>
     <main id="main">
-      <form>
-        <div id="main--div__top">
-          <section class="main--section">
+      <form id="form">
+        <div id="form__div--top">
+          <section class="form--section">
             <h2>Player One</h2>
             <input
               type="text"
@@ -27,7 +27,7 @@
               placeholder="Enter Last Name"
             />
           </section>
-          <section class="main--section">
+          <section class="form--section">
             <h2>Player Two</h2>
             <input
               type="text"
@@ -41,10 +41,20 @@
             />
           </section>
         </div>
-        <div id="main--div__bottom">
+        <div id="form__div--bottom">
           <button id="submit-button">Submit</button>
         </div>
       </form>
+      <div id="players__div">
+        <section class="players--player">
+          <h2 id="players--name-one"></h2>
+          <h3 id="players--team-one"></h3>
+        </section>
+        <section class="players--player">
+          <h2 id="players--name-two"></h2>
+          <h3 id="players--team-two"></h3>
+        </section>
+      </div>
     </main>
   </body>
 </html>
