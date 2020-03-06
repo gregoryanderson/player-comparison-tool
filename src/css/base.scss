@@ -1,5 +1,5 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-$primary-background: #FFF;
+$primary-background: #fff;
 
 body {
   background-color: $primary-background;
@@ -20,29 +20,34 @@ header {
 }
 
 main {
-  display: flex;
+  form {
+    height: 300px;
 
-  .main--section {
-    width: 50%;
-    text-align: center;
-    border: 1px solid black;
-    height: 500px;
-    background-color: #eaeaea;
+    #main--div__top {
+      display: flex;
 
-    form {
-      margin: auto;
-      height: 300px;
+      .main--section {
+        text-align: center;
+        border: 1px solid black;
+        background-color: #eaeaea;
+        margin: auto;
 
-      input {
-        width: 90%;
-        padding: 10px;
-        margin: 5px;
+        input {
+          width: 90%;
+          padding: 10px;
+          margin: 5px;
+        }
       }
+    }
+
+    #main--div__bottom {
+      display: flex;
+      justify-content: center;
 
       button {
-        width: 50%;
         padding: 10px;
-        margin: 5px;
+        width: 50%;
+        margin: 10px;
       }
     }
   }

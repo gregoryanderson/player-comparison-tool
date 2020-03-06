@@ -1,13 +1,36 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
+import $ from "jquery";
+import "./css/base.scss";
 
-// An example of how you import jQuery into a JS file if you use jQuery in that file
-import $ from 'jquery';
+$("#submit-button").on("click", function(e) {
+  e.preventDefault();
+  console.log('click')
 
-// An example of how you tell webpack to use a CSS (SCSS) file
-import './css/base.scss';
+  var playerOneFirstName = $("#left__first-name").val();
+  var playerOneLastName = $("#left__last-name").val();
+  var playerTwoFirstName = $("#right__first-name").val();
+  var playerTwoLastName = $("#right__last-name").val();
 
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
+  var playerOneStats = fetch(
+    `https://nba-players.herokuapp.com/players-stats/${playerOneLastName}/${playerOneFirstName}`
+  ).then(function(response) {
+    return response.json();
+  });
 
-console.log('This is the JavaScript entry file - your code begins here.');
+  var playerTwoStats = fetch(
+    `https://nba-players.herokuapp.com/players-stats/${playerTwoLastName}/${playerTwoFirstName}`
+  ).then(function(response) {
+    return response.json();
+  });
+
+  let playerData = { playerOne: {}, playerTwo: {} };
+
+  Promise.all([playerOneStats, playerTwoStats])
+    .then(function(values) {
+      playerData["playerOne"] = values[0];
+      playerData["playerTwo"] = values[1];
+      return playerData;
+    })
+    .catch(error => console.log(`Error in promises ${error}`));
+
+  console.log(playerData);
+});
