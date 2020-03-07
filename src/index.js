@@ -3,6 +3,7 @@ import Chart from "chart.js";
 import "./css/base.scss";
 
 $("#players__div").hide();
+$("#radar__div").hide();
 
 $("#submit-button").on("click", function(e) {
   e.preventDefault();
@@ -14,13 +15,13 @@ $("#submit-button").on("click", function(e) {
   var playerTwoLastName = $("#right__last-name").val();
 
   var playerOneStats = fetch(
-    `https://nba-players.herokuapp.com/players-stats/harden/james`
+    `https://nba-players.herokuapp.com/players-stats/${playerOneLastName}/${playerOneFirstName}`
   ).then(function(response) {
     return response.json();
   });
 
   var playerTwoStats = fetch(
-    `https://nba-players.herokuapp.com/players-stats/westbrook/russell`
+    `https://nba-players.herokuapp.com/players-stats/${playerTwoLastName}/${playerTwoFirstName}`
   ).then(function(response) {
     return response.json();
   });
@@ -44,43 +45,39 @@ const displayPlayers = playerData => {
   console.log(playerData);
   $("#form").hide();
   $("#players__div").show();
+  $("#radar__div").show();
+
   $("#players--name-one").text(playerData.playerOne.name);
   $("#players--name-two").text(playerData.playerTwo.name);
   $("#players--team-one").text(playerData.playerOne.team_name);
   $("#players--team-two").text(playerData.playerTwo.team_name);
 
-  var ctx1 = $("#players--chart-one");
-  var ctx2 = $("#players--chart-two");
+  var ctx1 = $("#players--p1-bar");
+  var ctx2 = $("#players--p2-bar");
+  var ctx3 = $("#players--p1-pie");
+  var ctx4 = $("#players--p2-pie");
+  var ctx5 = $("#radar");
 
   new Chart(ctx1, {
     type: "bar",
     data: {
-      labels: ["Points", "Rebounds", "Assists", "Steals", "Blocks"],
+      labels: ["Points", "Assists", "Rebounds", "Steals", "Blocks"],
       datasets: [
         {
-          label: "# of Votes",
+          label: playerData.playerOne.name,
+          backgroundColor: "rgba(200,0,0,0.2)",
           data: [
             playerData.playerOne.points_per_game,
             playerData.playerOne.rebounds_per_game,
             playerData.playerOne.assists_per_game,
             playerData.playerOne.steals_per_game,
             playerData.playerOne.blocks_per_game
-          ],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-          ],
-          borderWidth: 1
+          ]
+        },
+        {
+          label: "League Average",
+          backgroundColor: "rgba(0,0,200,0.2)",
+          data: [10, 6, 3, 1, 1]
         }
       ]
     },
@@ -101,32 +98,23 @@ const displayPlayers = playerData => {
   new Chart(ctx2, {
     type: "bar",
     data: {
-      labels: ["Points", "Rebounds", "Assists", "Steals", "Blocks"],
+      labels: ["Points", "Assists", "Rebounds", "Steals", "Blocks"],
       datasets: [
         {
-          label: "# of Votes",
+          label: playerData.playerTwo.name,
+          backgroundColor: "rgba(200,0,0,0.2)",
           data: [
             playerData.playerTwo.points_per_game,
             playerData.playerTwo.rebounds_per_game,
             playerData.playerTwo.assists_per_game,
             playerData.playerTwo.steals_per_game,
             playerData.playerTwo.blocks_per_game
-          ],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-          ],
-          borderWidth: 1
+          ]
+        },
+        {
+          label: "League Average",
+          backgroundColor: "rgba(0,0,200,0.2)",
+          data: [10, 6, 3, 1, 1]
         }
       ]
     },
@@ -141,6 +129,78 @@ const displayPlayers = playerData => {
           }
         ]
       }
+    }
+  });
+
+  var gamesSatP1 = 60 - parseInt(playerData.playerOne.games_played);
+  var gamesSatP2 = 60 - parseInt(playerData.playerTwo.games_played);
+
+  new Chart(ctx3, {
+    type: "pie",
+    data: {
+      labels: ["Games Played", "Games Sat"],
+      datasets: [
+        {
+          data: [playerData.playerOne.games_played, gamesSatP1],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)"
+          ],
+          borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {}
+  });
+
+  new Chart(ctx4, {
+    type: "pie",
+    data: {
+      labels: ["Games Played", "Games Sat"],
+      datasets: [
+        {
+          data: [playerData.playerTwo.games_played, gamesSatP2],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)"
+          ],
+          borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {}
+  });
+
+  new Chart(ctx5, {
+    type: "radar",
+    data: {
+      labels: ["Points", "Assists", "Rebounds", "Steals", "Blocks"],
+      datasets: [
+        {
+          label: playerData.playerOne.name,
+          backgroundColor: "rgba(200,0,0,0.2)",
+          data: [
+            playerData.playerOne.points_per_game,
+            playerData.playerOne.rebounds_per_game,
+            playerData.playerOne.assists_per_game,
+            playerData.playerOne.steals_per_game,
+            playerData.playerOne.blocks_per_game
+          ]
+        },
+        {
+          label: playerData.playerTwo.name,
+          backgroundColor: "rgba(0,0,200,0.2)",
+          data: [
+            playerData.playerTwo.points_per_game,
+            playerData.playerTwo.rebounds_per_game,
+            playerData.playerTwo.assists_per_game,
+            playerData.playerTwo.steals_per_game,
+            playerData.playerTwo.blocks_per_game
+          ]
+        }
+      ]
     }
   });
 };

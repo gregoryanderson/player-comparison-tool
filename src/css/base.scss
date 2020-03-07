@@ -65,4 +65,12 @@ main {
       text-align: center;
     }
   }
+
+  #radar__div {
+    border: 1px solid black;
+    background-color: $secondary-background;
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+  }
 }
